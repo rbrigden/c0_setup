@@ -2,6 +2,7 @@
 # should work on unix/bsd (linux/mac)
 
 require 'fileutils'
+require 'rbconfig'
 
 class C0Setup
 
@@ -75,7 +76,11 @@ class C0Setup
 	# copy the cc0 binary to "~/.c0"
 		user = File.expand_path("~")
 		Dir.chdir(File.dirname __dir__) do
-			FileUtils.cp("./cc0", "#{user}/.c0")
+			if get_os == "darwin"
+				FileUtils.cp("./cc0_mac", "#{user}/.c0/cc0")
+			elsif get_os == "linux"
+				FileUtils.cp("./cc0_linux", "#{user}/.c0/cc0")
+			end	
 		end
 		return File.exist?("#{user}/.c0/cc0")
 	end
@@ -84,7 +89,11 @@ class C0Setup
 	# copy the coin binary to "~/.c0"
 		user = File.expand_path("~")
 		Dir.chdir(File.dirname __dir__) do
-			FileUtils.cp("./coin", "#{user}/.c0")
+			if get_os == "darwin"
+				FileUtils.cp("./coin_mac", "#{user}/.c0/coin")
+			elsif get_os == "linux"
+				FileUtils.cp("./coin_linux", "#{user}/.c0/coin")
+			end	
 		end
 		return File.exist?("#{user}/.c0/coin")
 	end
@@ -100,6 +109,18 @@ class C0Setup
 		end
 		return nil
 	end
+
+	
+	def get_os
+		result = ""
+		os = RbConfig::CONFIG['host_os']
+		if os.downcase.include?('linux')
+  			result = 'linux'
+		elsif os.downcase.include?('darwin')
+  			result = 'darwin'
+  		end
+  		return result
+  	end
 
 end
 

@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'c0_setup'
-  s.version     = '0.0.1'
+  s.version     = '0.0.2'
   s.date        = '2016-01-16'
   s.homepage = 'https://github.com/rbrigden'
   s.summary     = "An unofficial setup utility for C0, a subset of C used to teach 15-122 @ CMU"
@@ -8,5 +8,5 @@ Gem::Specification.new do |s|
   s.executables << 'c0_setup'
   s.authors     = ["Ryan Brigden"]
   s.email       = 'rbrigden@cmu.edu'
-  s.files       = ["lib/c0_setup.rb", "cc0", "coin"]
+  s.files       = ["lib/c0_setup.rb", "cc0_mac", "coin_mac", "cc0_linux", "coin_linux"]
 end
