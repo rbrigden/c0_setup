@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+
+# an unofficial setup utility for C0, a subset of C used to teach 15-122 @ CMU
+# should work on unix/bsd (linux/mac)
+
+require 'c0_setup'
+
+unless ARGV[0].nil? or ARGV[0] != "install"
+	puts "Trying to setup C0 utilities..."
+	result = C0Setup.new.setup
+	puts result
+	puts "make sure you restart your terminal session for any changes to take effect" if !result.empty?
+else
+	puts "to install c0 utils (cc0 and coin), try again 'cc0-setup install"
+end
+
+
