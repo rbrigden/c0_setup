@@ -71,9 +71,8 @@ class C0Setup
 			return (in_path and Dir.exist? ".c0")
 		end
 	end
-
-	def install_cc0
 	# copy the cc0 binary to "~/.c0"
+	def install_cc0
 		user = File.expand_path("~")
 		Dir.chdir(File.dirname __dir__) do
 			if get_os == "darwin"
@@ -85,8 +84,8 @@ class C0Setup
 		return File.exist?("#{user}/.c0/cc0")
 	end
 
+	# copy the coin binary into "~/.c0"
 	def install_coin
-	# copy the coin binary to "~/.c0"
 		user = File.expand_path("~")
 		Dir.chdir(File.dirname __dir__) do
 			if get_os == "darwin"
@@ -97,9 +96,9 @@ class C0Setup
 		end
 		return File.exist?("#{user}/.c0/coin")
 	end
-
-	def which(cmd)
+	
 	# check for the presence of a binary in $PATH
+	def which(cmd)
 		exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
 		ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
 			exts.each do |ext|
@@ -110,7 +109,7 @@ class C0Setup
 		return nil
 	end
 
-	
+	# figure out the os
 	def get_os
 		result = ""
 		os = RbConfig::CONFIG['host_os']
