@@ -21,25 +21,16 @@ class C0Setup
 			result.push ".c0 folder already exists, remove it and retry if broken"
 			return result
 		end
-		if to_do.include? "cc0"
-			if install_cc0
-				result.push "successfully installed cc0"
+		if to_do.include? "cc0" and to_do.include? "coin"
+			if install_lib
+				result.push "successfully installed cc0 and coin"
 			else
-				result.push "failed to install cc0"
+				result.push "failed to install cc0 and coin"
 			end
-		else
-			result.push "cc0 is already installed somewhere, remove it and retry if broken"
+		else	
+			result.push "coin or cc0 is already installed somewhere, remove it and retry if broken"
 		end
-		if to_do.include? "coin"
-			if install_coin
-				result.push "successfully installed coin"
-			else
-				result.push "failed to install coin"
-			end
-		else
-			result.push "cc0 is already installed somewhere, remove it and retry if broken"
-		end
-		return result
+
 	end
 
 	# check for things that don't exist yet
@@ -63,39 +54,25 @@ class C0Setup
 	def create_runpath
 		Dir.chdir(File.expand_path("~")) do
 			Dir.mkdir ".c0"
-			File.new ".bashrc" unless File.exist? ".bashrc"
+			File.new("#{File.expand_path("~")}/.bashrc", "w+") unless File.exist? ".bashrc"
 			File.open(".bashrc", "a") do |file|
-				file.puts "export PATH=$PATH:~/.c0"
+				file.puts "export PATH=$PATH:~/.c0/bin"
 			end
-			in_path = File.open(".bashrc", "r").read.include? "export PATH=$PATH:~/.c0"
+			in_path = File.open(".bashrc", "r").read.include? "export PATH=$PATH:~/.c0/bin"
 			return (in_path and Dir.exist? ".c0")
 		end
 	end
-	# copy the cc0 binary to "~/.c0"
-	def install_cc0
+	# copy the c0 lib to "~/.c0" (OS specific)
+	def install_lib
 		user = File.expand_path("~")
-		Dir.chdir(File.dirname __dir__) do
-			if get_os == "darwin"
-				FileUtils.cp("./cc0_mac", "#{user}/.c0/cc0")
-			elsif get_os == "linux"
-				FileUtils.cp("./cc0_linux", "#{user}/.c0/cc0")
-			end	
-		end
-		return File.exist?("#{user}/.c0/cc0")
+		if get_os == "darwin"
+			`tar -xvzf #{File.expand_path(File.dirname __dir__)}/c0_mac.tar.gz -C #{user}/.c0`
+		elsif get_os == "linux"
+			`tar -xvzf #{File.expand_path(File.dirname __dir__)}/c0_linux.tar.gz -C #{user}/.c0`
+		end	
+		return (File.exist?("#{user}/.c0/bin/cc0") and File.exist?("#{user}/.c0/bin/coin"))
 	end
 
-	# copy the coin binary into "~/.c0"
-	def install_coin
-		user = File.expand_path("~")
-		Dir.chdir(File.dirname __dir__) do
-			if get_os == "darwin"
-				FileUtils.cp("./coin_mac", "#{user}/.c0/coin")
-			elsif get_os == "linux"
-				FileUtils.cp("./coin_linux", "#{user}/.c0/coin")
-			end	
-		end
-		return File.exist?("#{user}/.c0/coin")
-	end
 	
 	# check for the presence of a binary in $PATH
 	def which(cmd)
@@ -122,4 +99,3 @@ class C0Setup
   	end
 
 end
-

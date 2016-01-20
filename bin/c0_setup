@@ -11,7 +11,7 @@ unless ARGV[0].nil? or ARGV[0] != "install"
 	puts result
 	puts "make sure you restart your terminal session for any changes to take effect" if !result.empty?
 else
-	puts "to install c0 utils (cc0 and coin), try again 'cc0-setup install"
+	puts "to install c0 utils (cc0 and coin), try again 'cc0_setup install"
 end
 
 
